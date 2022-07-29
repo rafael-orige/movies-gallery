@@ -2,17 +2,20 @@
   <div id="app">
     <div class="container">
       <Header />
+      <Recommended />
     </div>
   </div>
 </template>
 
 <script>
 import Header from './components/Header.vue';
+import Recommended from './components/RecommendedSection.vue';
 
 export default {
   name: 'App',
   components: {
     Header,
+    Recommended,
   },
 };
 </script>
