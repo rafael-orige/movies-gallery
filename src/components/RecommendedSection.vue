@@ -33,7 +33,7 @@ export default {
     };
   },
   async created() {
-    this.$store.commit('setMovies');
+    this.$store.dispatch('setMovies');
   },
   computed: {
     getShowsAndMovies() {

@@ -19,7 +19,10 @@ const search = () => {
     });
 
     const result = res.data;
-    return result;
+    return {
+      ...result,
+      query,
+    };
   };
 
   return {
