@@ -1,14 +1,27 @@
 <template>
-  <div class="card">
-    <div :class="`image ${large ? 'large' : 'default'}`">
+  <div
+    :class="`card ${large ? 'large' : 'default'}`"
+    :title="this.title"
+  >
+    <div class="card-wrapper">
+      <img
+        :src="`https://image.tmdb.org/t/p/w500${this.image}`"
+        :alt="this.title"
+        class="image"
+      />
       <div class="bookmark"></div>
       <div v-if="large" class="information inside">
-          AAAAA
+        {{this.title}}
       </div>
     </div>
-    <div class="information">
-      <p>2022 - CATEGORY - RATING</p>
-      <h2 class="title">MOVIE TITLE</h2>
+
+    <div v-if="!large" class="information">
+      <p>
+        {{this.year}} -
+        {{this.category}} -
+        <span :title="`${this.votes} total votes`">{{this.rating}} Rating</span>
+      </p>
+      <h2 class="title">{{this.title}}</h2>
     </div>
   </div>
 </template>
@@ -21,37 +34,86 @@ export default {
       type: Boolean,
       require: false,
     },
+    movie: {
+      type: Object,
+      require: true,
+    },
+  },
+  data() {
+    return {
+      image: 'undefined',
+      title: 'undefined',
+      year: '2020',
+      rating: 0,
+      votes: 0,
+      category: '',
+    };
+  },
+  created() {
+    const { movie } = this;
+
+    this.image = movie.poster_path;
+    this.title = movie.title || movie.name;
+    this.rating = movie.vote_average;
+    this.votes = movie.vote_count;
+    this.category = movie.category;
+
+    const releaseDate = movie.release_date || movie.first_air_date;
+    const year = releaseDate ? releaseDate.split('-')[0] : 'undefined';
+    this.year = year;
   },
 };
 </script>
 
 <style scoped lang="scss">
-.card {
-    margin: 20px;
-}
 
-.image {
-  border-radius: 5px;
-  height: 200px;
-  position: relative;
+.card {
+  cursor: pointer;
+  margin-bottom: 20px;
   overflow: hidden;
 
-  &::before {
-    background-color: rgba($color: #000000, $alpha: 0.2);
-    content: "";
-    left: 0;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    width: 100%;
-  }
-
   &.default {
-    width: 300px;
+      flex-grow: 1;
+    }
+
+    &.large {
+      width: 450px;
+    }
+}
+
+.card-wrapper {
+  overflow: hidden;
+
+  .image {
+      border-radius: 5px;
+      height: 200px;
+      object-fit: cover;
+      overflow: hidden;
+      position: relative;
+      transition: all ease-out 0.1s;
+      width: 100%;
+
+      &:hover {
+        transform: scale(1.2);
+      }
+    }
+}
+
+.information {
+  max-width: 100%;
+
+  p {
+    margin: 10px 0 5px 0;
+    font-size: 0.8em;
   }
 
-  &.large {
-    width: 450px;
+  h2 {
+    font-size: 1.1em;
+    margin: 0;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }
 
