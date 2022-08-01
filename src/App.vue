@@ -33,6 +33,8 @@ export default {
 
   .container {
     padding: 20px;
+    margin: auto;
+    max-width: 1200px;
   }
 }
 
