@@ -11,9 +11,10 @@ module.exports = {
     parser: '@babel/eslint-parser',
   },
   rules: {
-    'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'no-console': 'warn',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'linebreak-style': ['error', 'windows'],
     'import/prefer-default-export': 'off',
+    'func-names': 'off',
   },
 };
