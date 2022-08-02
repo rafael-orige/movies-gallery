@@ -8,11 +8,11 @@ const baseParams = {
 };
 
 const search = () => {
-  const getQuery = async (query) => {
+  const getQuery = async ({ query, page }) => {
     const res = await searchInstance.get('/multi', {
       params: {
         ...baseParams,
-        page: 1,
+        page,
         include_adult: false,
         query,
       },

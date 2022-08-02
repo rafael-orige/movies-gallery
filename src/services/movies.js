@@ -7,11 +7,11 @@ const baseParams = {
 };
 
 const movies = () => {
-  const getMovies = async () => {
+  const getMovies = async (page) => {
     const res = await moviesInstance.get('/popular', {
       params: {
         ...baseParams,
-        page: 1,
+        page,
       },
     });
     const result = res.data;

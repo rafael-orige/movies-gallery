@@ -1,18 +1,25 @@
-const setMovies = (state, { shows, movies }) => {
+const setAll = (state, { shows, movies }) => {
   const moviesState = state.movies;
   moviesState.loading = true;
 
-  const moviesArr = movies;
-  const moviesWithCategory = moviesArr.map((movie) => ({ ...movie, category: 'Movie' }));
-
-  const showsArr = shows;
-  const showsWithCategory = showsArr.map((show) => ({ ...show, category: 'TV Show' }));
-
   moviesState.error = '';
-  moviesState.data.movies = moviesWithCategory;
-  moviesState.data.shows = showsWithCategory;
+  moviesState.data.movies = movies;
+  moviesState.data.shows = shows;
 
   moviesState.loading = false;
+};
+
+const setMovies = (state, movies) => {
+  const moviesState = state.movies;
+
+  moviesState.data.movies = movies;
+};
+
+const setShows = (state, shows) => {
+  const showsState = state.movies;
+
+  showsState.error = '';
+  showsState.data.shows = shows;
 };
 
 const setSearch = async (state, result) => {
@@ -35,7 +42,7 @@ const setSearch = async (state, result) => {
   });
 
   moviesState.data.search = {
-    result: searchWithCategory || {},
+    result: searchWithCategory || [],
     query,
     total_results: totalResults,
     searching: true,
@@ -46,10 +53,28 @@ const setSearch = async (state, result) => {
 
 const clearSearch = (state) => {
   state.movies.searching = false;
+  state.movies.data.seach = {
+    result: [],
+    query: '',
+    total_results: 0,
+    searching: false,
+  };
+};
+
+const setLoading = (state, loading) => {
+  state.loading = loading;
+};
+
+const setError = (state, error) => {
+  state.error = error.message;
 };
 
 export const mutations = {
+  setAll,
   setMovies,
+  setShows,
   setSearch,
   clearSearch,
+  setLoading,
+  setError,
 };

@@ -8,11 +8,11 @@ const baseParams = {
 };
 
 const shows = () => {
-  const getShows = async () => {
+  const getShows = async (page) => {
     const res = await showsInstance.get('/popular', {
       params: {
         ...baseParams,
-        page: 1,
+        page,
       },
     });
 
