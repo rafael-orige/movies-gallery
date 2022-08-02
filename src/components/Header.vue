@@ -4,15 +4,15 @@
       <img src="../assets/logo.png" alt="logo" />
       <nav>
         <ul>
-          <li>Home</li>
-          <li>Movies</li>
-          <li>TV Shows</li>
+          <li><router-link to="/">Home</router-link></li>
+          <li><router-link to="/movies">Movies</router-link></li>
+          <li><router-link to="/shows">TV Shows</router-link></li>
         </ul>
       </nav>
     </div>
 
     <div class="header-right">
-      <label for="search">
+      <label for="search" :class="{active: input.length}">
         <input
           autocomplete="off"
           v-model="input"
@@ -21,7 +21,7 @@
           type="search"
           placeholder="Search..."
         />
-        <button @click="search">Click to search</button>
+        <button @click="search"><i class="fas fa-search"></i></button>
       </label>
     </div>
   </header>
@@ -36,12 +36,13 @@ export default {
     return {
       input: '',
       query: '',
+      page: 1,
     };
   },
   methods: {
     search() {
       if (!this.input) return;
-      this.$store.commit('setSearch', this.input);
+      this.$store.dispatch('setSearch', this.input);
     },
     debounce: _.debounce(function () {
       this.query = this.input;
@@ -54,7 +55,13 @@ export default {
   },
   watch: {
     getQuery(query) {
-      this.$store.commit('setSearch', query);
+      if (!query) {
+        this.$store.dispatch('clearSearch');
+        return;
+      }
+
+      this.$store.dispatch('setSearch', { query, page: this.page });
+      this.page += 1;
     },
   },
 };
@@ -98,6 +105,11 @@ export default {
       cursor: pointer;
       margin: 0 5px;
       padding: 5px 5px;
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
     }
   }
 
@@ -109,7 +121,6 @@ export default {
 
     &:focus,
     .active {
-      outline: none;
       border-radius: 5px;
       border: 2px solid #273455;
     }
@@ -117,7 +128,7 @@ export default {
     #search {
       background-color: transparent;
       border: none;
-      color: white;
+      color: inherit;
       padding: 5px 10px;
 
       &:focus {
@@ -127,9 +138,10 @@ export default {
 
     button {
       border: none;
-      outline: none;
       background: transparent;
-      color: white;
+      color: #6c7275;
+      cursor: pointer;
+      outline: none;
     }
   }
 </style>
